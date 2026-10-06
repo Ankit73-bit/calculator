@@ -1,69 +1,140 @@
-* {
-  padding: 0;
+/* ============================================
+   RESET
+   Remove browser default spacing so layout is predictable.
+   box-sizing: border-box = padding/border count inside width/height.
+============================================ */
+*,
+*::before,
+*::after {
   margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
+/* ============================================
+   PAGE SHELL
+   Flexbox centers the calculator both ways.
+   (Better than absolute + transform for this case.)
+============================================ */
 body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: "Courier New", Courier, monospace;
-}
-
-.container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: solid 1px black;
-  border-radius: 10px;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 300px;
-  height: auto;
-  background-color: #3e3d3d;
-}
-
-.cal-display {
-  display: flex;
-  border: black 1px solid;
-  justify-content: end;
-  align-items: end;
-  border-radius: 5px;
-  padding: 5px;
-  background-color: #1e1e1e;
+  background: linear-gradient(160deg, #2a2a2a 0%, #1a1a1a 100%);
   color: #fff;
 }
 
-.display-txt {
-  font-size: 30px;
-}
-
-.wrapper {
-  display: flex;
-  gap: 15px;
-}
-
-.block {
-  background: #000;
-  display: flex;
-  justify-content: space-around;
-  padding: 5px;
-}
-
-.num-pad .action-btns {
+/* ============================================
+   CALCULATOR SHELL
+   One card that holds display + keypad.
+============================================ */
+.calculator {
+  width: min(320px, 92vw);
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background-color: #3e3d3d;
+  border: 1px solid #111;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
-.num-pad {
-  width: 200px;
+/* ============================================
+   DISPLAY
+   Right-aligned like a real calculator screen.
+============================================ */
+.display {
+  min-height: 64px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background-color: #1e1e1e;
+  border: 1px solid #111;
+  overflow: hidden;
 }
 
+.display__value {
+  /* <output> is inline by default; make it fill the row */
+  display: block;
+  width: 100%;
+  text-align: right;
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  line-height: 1.2;
+  /* Long numbers won't blow the layout */
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* ============================================
+   KEYPAD LAYOUT
+   Two columns: numbers (wider) | actions (narrower)
+============================================ */
+.keypad {
+  display: grid;
+  grid-template-columns: 3fr 1.2fr;
+  gap: 10px;
+}
+
+/* Each pad is its own mini-grid of buttons */
+.keypad__numbers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.keypad__actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+/* Equals sits under the last operator row and spans both columns */
+.btn--equal {
+  grid-column: 1 / -1;
+  height: 100%;
+  min-height: 48px;
+  background-color: #2f6fed;
+  color: #fff;
+}
+
+/* ============================================
+   BUTTON BASE
+   Shared look for every key.
+============================================ */
 .btn {
-  font-size: 20px;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  margin: 2px;
+  appearance: none;
+  border: none;
+  border-radius: 8px;
+  min-height: 48px;
+  font: inherit;
+  font-size: 1.15rem;
+  cursor: pointer;
+  background-color: #f3f3f3;
+  color: #111;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.btn:hover {
+  filter: brightness(1.08);
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* Clear keys feel different from number keys */
+.btn--clear {
+  background-color: #c44;
+  color: #fff;
+}
+
+/* Operators share one accent */
+.btn--op {
+  background-color: #f0a500;
+  color: #111;
 }

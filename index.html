@@ -2,58 +2,80 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Makes the page scale correctly on phones/tablets -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculator</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
-    <main class="container">
-      <div class="cal-display">
-        <span class="display-txt">1234</span>
-      </div>
-      <div class="wrapper">
-        <div class="num-pad">
-          <div class="block block-1">
-            <button type="button" class="btn num-btn">7</button>
-            <button type="button" class="btn num-btn">8</button>
-            <button type="button" class="btn num-btn">9</button>
-          </div>
-          <div class="block block-2">
-            <button type="button" class="btn num-btn">4</button>
-            <button type="button" class="btn num-btn">5</button>
-            <button type="button" class="btn num-btn">6</button>
-          </div>
-          <div class="block block-3">
-            <button type="button" class="btn num-btn">1</button>
-            <button type="button" class="btn num-btn">2</button>
-            <button type="button" class="btn num-btn">3</button>
-          </div>
-          <div class="block block-4">
-            <button type="button" class="btn num-btn">0</button>
-            <button type="button" class="btn num-btn">00</button>
-            <button type="button" class="btn num-btn">.</button>
-          </div>
+    <!--
+      <main> = the main content of the page.
+      One calculator = one composition, so everything lives inside this shell.
+    -->
+    <main class="calculator" aria-label="Calculator">
+      <!--
+        DISPLAY AREA
+        - <output> is a semantic tag meant for calculation results.
+        - aria-live="polite" lets screen readers announce value changes
+          without interrupting the user.
+      -->
+      <section class="display" aria-live="polite">
+        <output class="display__value" id="display" for="">0</output>
+      </section>
+
+      <!--
+        KEYPAD
+        Split into two columns:
+          1) number pad (digits + decimal)
+          2) action buttons (clear + operators + equals)
+
+        Using CSS Grid on .keypad (see style.css) instead of
+        wrapping every row in extra <div class="block"> containers.
+      -->
+      <section class="keypad">
+        <!-- NUMBER PAD: 0–9, 00, and decimal point -->
+        <div class="keypad__numbers" role="group" aria-label="Number pad">
+          <button type="button" class="btn btn--num" data-value="7">7</button>
+          <button type="button" class="btn btn--num" data-value="8">8</button>
+          <button type="button" class="btn btn--num" data-value="9">9</button>
+
+          <button type="button" class="btn btn--num" data-value="4">4</button>
+          <button type="button" class="btn btn--num" data-value="5">5</button>
+          <button type="button" class="btn btn--num" data-value="6">6</button>
+
+          <button type="button" class="btn btn--num" data-value="1">1</button>
+          <button type="button" class="btn btn--num" data-value="2">2</button>
+          <button type="button" class="btn btn--num" data-value="3">3</button>
+
+          <button type="button" class="btn btn--num" data-value="0">0</button>
+          <button type="button" class="btn btn--num" data-value="00">00</button>
+          <button type="button" class="btn btn--num" data-value=".">.</button>
         </div>
-        <div class="action-btns">
-          <div class="block block-1">
-            <button type="button" class="btn btn-switch">A/C</button>
-            <button type="button" class="btn btn-clear">C</button>
-          </div>
-          <div class="block block-2">
-            <button type="button" class="btn btn-add">+</button>
-            <button type="button" class="btn btn-substract">-</button>
-          </div>
-          <div class="block block-3">
-            <button type="button" class="btn btn-multiply">*</button>
-            <button type="button" class="btn btn-divide">/</button>
-          </div>
-          <div class="block block-4">
-            <button type="button" class="btn btn-equal">=</button>
-          </div>
+
+        <!--
+          ACTION BUTTONS
+          - Clear keys (A/C, C)
+          - Math operators (+, -, *, /)
+          - Equals (=) spans the remaining space via CSS grid
+        -->
+        <div class="keypad__actions" role="group" aria-label="Calculator actions">
+          <button type="button" class="btn btn--clear" data-action="all-clear">A/C</button>
+          <button type="button" class="btn btn--clear" data-action="clear">C</button>
+
+          <button type="button" class="btn btn--op" data-action="add">+</button>
+          <button type="button" class="btn btn--op" data-action="subtract">-</button>
+
+          <button type="button" class="btn btn--op" data-action="multiply">*</button>
+          <button type="button" class="btn btn--op" data-action="divide">/</button>
+
+          <!-- Extra class so CSS can make "=" taller / span rows -->
+          <button type="button" class="btn btn--equal" data-action="equal">=</button>
         </div>
-      </div>
+      </section>
     </main>
 
+    <!-- JS will wire up button clicks later -->
     <script src="script.js"></script>
   </body>
 </html>
